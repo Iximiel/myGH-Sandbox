@@ -1,0 +1,19 @@
+name: New tag, new version
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: gh-pages
+    - name: create a new latest version
+      run: |
+        rm -f latest
+        t=${{github.ref_name}}
+        ln -s ${t%.*}.x latest

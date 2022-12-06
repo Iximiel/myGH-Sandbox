@@ -8,6 +8,9 @@ on:
 jobs:
   update-gh-page:
     runs-on: ubuntu-latest
+    env:
+      CI_COMMIT_MESSAGE: setting ${{github.ref_name}} as latest version
+      CI_COMMIT_AUTHOR: ${{ github.event.repository.name }} CI
     steps:
     - uses: actions/checkout@v3
       with:
@@ -17,3 +20,11 @@ jobs:
         rm -f latest
         t=${{github.ref_name}}
         ln -s ${t%.*}.x latest
+    - name: push the change
+       run: |
+        git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+        git config --global user.email "iximiel@users.noreply.github.com"
+        git commit -a -m "${{ env.CI_COMMIT_MESSAGE }}"
+        git push
+
+      

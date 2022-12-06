@@ -29,6 +29,7 @@ jobs:
         git commit -m "${{ env.CI_COMMIT_MESSAGE }}" --allow-empty   
     - name: push the commit
       run: git push origin gh-pages
+  
   #force the deploy after the creation of the folder
   #deploy:
   #  needs: add-new-version

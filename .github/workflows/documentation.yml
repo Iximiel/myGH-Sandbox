@@ -1,0 +1,40 @@
+name: Sphinx build and deploy documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set Up Python 3.8
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
+    - name: Install requisites
+      run: python -m pip install --upgrade pip
+    - name: Install hatch
+      run: python  -m pip install hatch
+    - name: Build HTML
+      run: python -m hatch run docs:build
+    - id: versioning
+      run: |
+        t=$(python -m hatch version)
+        echo "VERSION=${t%.*}.x" >> $GITHUB_OUTPUT
+    - name: out
+      run: echo ${{ steps.versioning.outputs.VERSION}}
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-docs
+        path: docs/build/html/
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        destination_dir: ${{ steps.versioning.outputs.VERSION}}
+        publish_dir: docs/build/html

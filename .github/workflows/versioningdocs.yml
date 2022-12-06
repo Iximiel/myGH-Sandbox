@@ -20,11 +20,19 @@ jobs:
         rm -f latest
         t=${{github.ref_name}}
         ln -s ${t%.*}.x latest
-    - name: push the change
+        
+    - name: test if latest is effectively changed
+      uses: technote-space/get-diff-action@v3
+      id: git_diff
+      with:
+          FILES: latest
+          
+    - name: push the change if necessary
+      if: steps.git_diff.outputs.diff
       run: |
         git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
         git config --global user.email "iximiel@users.noreply.github.com"
-        git add latest
+        git add latest || exit 0
         git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
         git push
   #force the deploy after the creation of the folder

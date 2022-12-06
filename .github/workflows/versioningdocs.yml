@@ -26,7 +26,7 @@ jobs:
         git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
         git config --global user.email "iximiel@users.noreply.github.com"
         git add latest 
-        git commit -m "${{ env.CI_COMMIT_MESSAGE }}" --git add latest --allow-empty   
+        git commit -m "${{ env.CI_COMMIT_MESSAGE }}" --allow-empty   
     - name: push the commit
       run: git push origin gh-pages
   #force the deploy after the creation of the folder

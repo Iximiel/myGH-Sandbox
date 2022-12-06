@@ -21,7 +21,7 @@ jobs:
         t=${{github.ref_name}}
         ln -s ${t%.*}.x latest
     - name: push the change
-       run: |
+      run: |
         git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
         git config --global user.email "iximiel@users.noreply.github.com"
         git commit -a -m "${{ env.CI_COMMIT_MESSAGE }}"

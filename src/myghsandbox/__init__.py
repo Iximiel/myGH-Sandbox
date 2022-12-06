@@ -1,7 +1,12 @@
 __version__ = "v0.0.0"
 
 
-def getVersion():
+def getVersion() -> str:
+    """A powerful function to return the version of myghsandbox
+
+    Returns:
+        str: the version
+    """
     return __version__
 
 
